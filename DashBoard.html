@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<style>
+		.card {
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+			/* max-width: 1000px; */
+			margin: auto;
+			font-family: verdana;
+		}
+
+		.mainlPanel {
+			position: relative;
+		}
+
+		.dataPanel {
+			/* Center vertically and horizontally */
+			position: absolute;
+			width: auto;
+
+		}
+
+		.HideCard {
+			display: none;
+		}
+
+		.miscDetails {
+
+			margin-left: 10px;
+		}
+
+		.Sessioncard {
+			box-shadow: 8px 10px 9px 0px rgb(0 0 0 / 40%);
+			max-width: 150px;
+			margin-top: 5px;
+			margin-left: 10px;
+			margin-bottom: 10px;
+			font-family: verdana;
+			padding: 10px;
+
+		}
+
+		.Sessioncard_Available {
+			background-color: #7ba07b;
+		}
+
+		.Sessioncard_NotAvailable {
+			background-color: #ec8888;
+		}
+
+
+		.title {
+			color: #c9c9c9;
+			font-size: 22px;
+			text-align: center;
+			background: #317648;
+			margin-top: 5px;
+			margin-left: 10px;
+			margin-right: 10px;
+			margin-bottom: 5px;
+		}
+
+
+		.Address,
+		.state,
+		.district,
+		.PINCode,
+		.CoOrds,
+		.fee_type_Free,
+		.fee_type_Paid,
+		.VaccineFees,
+		.min_age_limit,
+		.vaccine,
+		.available_capacity {
+			font-size: 12px;
+			font-family: verdana;
+		}
+
+		.fee_type_Paid {
+			font-size: 14px;
+			color: #ff0000;
+		}
+
+		.fee_type_Free {
+			font-size: 14px;
+			color: #00ff00;
+		}
+
+		.sessionContainer {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			justify-content: flex-start;
+			align-content: center;
+		}
+
+
+
+
+
+		/*----------------Filter buttons--START---------------*/
+		.filter {
+
+			padding: 5px 10px;
+			font-size: 12px;
+			background-color: #a6afb0;
+			text-align: center;
+			cursor: pointer;
+			outline: none;
+			color: #fff;
+			margin: 3px;
+			border: none;
+			border-radius: 8px;
+			/*box-shadow: 0 5px #999;*/
+			width: auto;
+		}
+
+		.filterAdded {
+
+			background-color: #379399;
+			padding: 5px 10px;
+			font-size: 12px;
+			text-align: center;
+			cursor: pointer;
+			outline: none;
+			color: #fff;
+			margin: 3px;
+			border: none;
+			border-radius: 8px;
+			/*box-shadow: 0 5px #999;*/
+		}
+
+		.filter:hover {
+			background-color: #3e8e41
+		}
+
+		.filter:active {
+			background-color: #3e8e41;
+			box-shadow: 0 3px #666;
+			transform: translateY(2px);
+		}
+
+		.filterselect {
+			margin-left: 3px;
+		}
+
+		.ColumnFilter {
+			border: 1px #666;
+			border-style: inset;
+		}
+
+		/*----------------Filter buttons--END---------------*/
+
+
+		.input {
+			padding: 8px;
+			border: none;
+			border-bottom: 1px solid #ccc;
+			width: 100%
+		}
+
+		input[type=text] {
+			width: 140px;
+			background-image: url('search.png');
+			background-size: 0px;
+			background-position: 4px 4px;
+			background-repeat: no-repeat;
+			padding: 6px 20px 6px 5px;
+			-webkit-transition: width 0.4s ease-in-out;
+			transition: width 0.4s ease-in-out;
+			margin-left: 0px;
+		}
+
+		input[type=text]:focus {
+			width: 150px;
+		}
+
+
+		.hideInputText {
+			display: none;
+		}
+
+		.shoewInputText {
+			display: block;
+		}
+
+		.min_age_limit {
+			margin-top: -10px;
+			margin-left: -10px;
+		}
+
+		.modalPopupHide {
+			display: none;
+		}
+
+		.modalPopupShow {
+			display: block;
+		}
+
+		.modalPopup {
+			width: 250px;
+			height: 300px;
+			margin: 0 auto;
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 50%;
+			border: 1px solid;
+			-webkit-transform: translateY(-50%);
+			-moz-transform: translateY(-50%);
+			-ms-transform: translateY(-50%);
+			-o-transform: translateY(-50%);
+			transform: translateY(-50%);
+			z-index: 100;
+
+		}
+
+		.PopUpheader {
+			background-color: #70a48f;
+			text-align: center;
+			padding: 5px;
+			border-bottom: black solid 2px;
+			width: 240px;
+		}
+
+		.Popupdata {
+			width: 250px;
+			height: 245px;
+			overflow: auto;
+		}
+
+		.Popupdata table {
+			width: 230px;
+		}
+
+		.Popupdata tr {
+			border-bottom: 1px solid #ddd;
+		}
+
+		.Popupdata tr:hover {
+			background-color: #D6EEEE;
+		}
+
+		.searchPopup {
+			width: 250px;
+		}
+
+		.divsearchPopup {
+			width: 250px;
+			border-bottom: black solid 2px;
+		}
+
+
+		.hideFindByDistrictFilter{
+			display: none;
+		}
+		.showFindByDistrictFilter{
+			display: block;
+		}
+	</style>
+
+	<script>
+
+		const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+var SearchBy ="PIN"
+
+		var filter_Paid = false;
+		var filter_Free = false;
+		var filter_18 = false;
+		var filter_45 = false;
+		var filter_Available = false;
+
+		var Alert_Available_set = false;
+		var intr;
+		var availableCount = 0;
+
+		function checkAvailableSlots() {
+
+			if (Alert_Available_set) {
+				intr = setInterval(getdata, 4000);
+			}
+			else {
+				clearInterval(intr);
+			}
+		}
+
+
+		function getdata() {
+			var requestOptions = {
+				method: 'GET'
+			};
+
+
+			var searchString = document.getElementById("txtSearch").value;
+			var d = new Date();
+			var date = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+			console.log(date);
+			// fetch("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode="+searchString+"&date=29-05-2021", requestOptions)
+					
+
+					  var url =""
+					  if(SearchBy=="PIN"){
+						var searchString = document.getElementById("txtSearch").value;
+						  url ="https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + searchString + "&date=" + date ;
+					  }
+					  else if(SearchBy=="DISTRICT"){
+						var searchString =document.getElementById("txtDistricts").getAttribute( "Key");
+						url ="https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id="+searchString+"&date=" + date ;
+					  }
+			fetch(url, requestOptions)
+				.then(response => response.text())
+				.then(result => {
+
+					var jdata = JSON.parse(result);
+
+					
+					document.getElementById("lblCentreFound").textContent = "Centers Found :"+ jdata.centers.length;
+					var htmlStr = "";
+					availableCount = 0;
+					for (i = 0; i < jdata.centers.length; i++) {
+
+
+						//Filter
+						if (jdata.centers[i].fee_type.toUpperCase() == "PAID" && filter_Paid == true) {
+
+						} else {
+							if (jdata.centers[i].fee_type.toUpperCase() == "FREE" && filter_Free == true) {
+
+							}
+							else {
+								if (filter_Paid == false && filter_Free == false) {
+								} else {
+									continue;
+								}
+							}
+						}
+
+
+						// if	(jdata.centers[i].fee_type.toUpperCase()!="FREE" && filter_Free==true ){
+						// continue;
+						// }
+
+
+
+
+						htmlStr = htmlStr + '<div id="' + i + '" class="card">';  //START CARD
+						htmlStr = htmlStr + '<p id="CentreName_' + i + '" class="title">' + jdata.centers[i].name + '</p>';
+
+						htmlStr = htmlStr + '<div >';
+						htmlStr = htmlStr + '<div class="miscDetails">';  //Start Add and misc details
+						htmlStr = htmlStr + '<div class ="Address" id="Address_' + i + '"><i>Address: ' + jdata.centers[i].address + ' ('+jdata.centers[i].block_name+')</i></div>';
+						htmlStr = htmlStr + '<div class ="state" id="state_' + i + '"> State: ' + jdata.centers[i].state_name + ', District: ' + jdata.centers[i].district_name + ', ' + jdata.centers[i].pincode + ' </div>';
+						htmlStr = htmlStr + '<div class ="CoOrds" id="CoOrds_' + i + '" style ="display:none"> "lat": 18,"long": 73</div>';
+
+						if (jdata.centers[i].fee_type.toUpperCase() == "FREE") {
+							htmlStr = htmlStr + '<div class ="fee_type_Free" id="fee_type_' + i + '">' + jdata.centers[i].fee_type + '</div>';
+						} else {
+							htmlStr = htmlStr + '<div class ="fee_type_Paid" id="fee_type_' + i + '">' + jdata.centers[i].fee_type + '</div>';
+						}
+
+						htmlStr = htmlStr + '<div id="VaccineFees"> ';   //START VaccineFees
+						if (jdata.centers[i].vaccine_fees != undefined) {
+							for (j = 0; j < jdata.centers[i].vaccine_fees.length; j++) {
+								htmlStr = htmlStr + '<div class ="VaccineFees" id="vaccine_' + i + '_' + j + '">' + jdata.centers[i].vaccine_fees[j].vaccine + ' : &#8377;' + jdata.centers[i].vaccine_fees[j].fee + ' </div>';
+							}
+						}
+						htmlStr = htmlStr + '</div>'; 				 //END VaccineFees
+
+						htmlStr = htmlStr + '</div>'; //Start Add and misc details
+
+						htmlStr = htmlStr + '<div class="sessionContainer">'; //START sessionContainer
+
+						var sessionhtmlStr = "";
+						var sessionSize = jdata.centers[i].sessions.length;
+						var invalidSessions = 0;
+						for (k = 0; k < jdata.centers[i].sessions.length; k++) {
+
+							// //Filter
+							if (jdata.centers[i].sessions[k].min_age_limit == "18" && filter_18 == true) {
+
+							} else {
+								if (jdata.centers[i].sessions[k].min_age_limit == "45" && filter_45 == true) {
+
+								}
+								else {
+									if (filter_18 == false && filter_45 == false) {
+									} else {
+
+										// htmlStr = htmlStr.replace('id="'+i+'" class="card"','id="'+i+'" class="HideCard"')
+
+										invalidSessions++;
+										continue;
+									}
+								}
+							}
+
+
+
+							// if	(jdata.centers[i].sessions[k].available_capacity=="0" && filter_Available==true ){
+							// htmlStr = htmlStr.replace('id="'+i+'" class="card"','id="'+i+'" class="HideCard"')
+							// continue;
+							// } 
+
+
+							if (jdata.centers[i].sessions[k].available_capacity != undefined && jdata.centers[i].sessions[k].available_capacity != 0 && jdata.centers[i].sessions[k].available_capacity != "0") {
+
+								sessionhtmlStr = sessionhtmlStr + ' <div class="Sessioncard Sessioncard_Available" id="sessions_' + i + '_' + k + '">';
+								availableCount++;
+							} else {
+
+								if (filter_Available == true) { invalidSessions++; continue; }
+
+								sessionhtmlStr = sessionhtmlStr + ' <div class="Sessioncard Sessioncard_NotAvailable" id="sessions_' + i + '_' + k + '">';
+							}
+
+							let current_datetime = new Date(jdata.centers[i].sessions[k].date.split("-")[2], parseInt(jdata.centers[i].sessions[k].date.split("-")[1]) - 1, jdata.centers[i].sessions[k].date.split("-")[0]);
+
+							let formatted_date = current_datetime.getDate() + "-" + months[current_datetime.getMonth()] + "-" + current_datetime.getFullYear()
+							// console.log(formatted_date)
+							sessionhtmlStr = sessionhtmlStr + ' <div class="min_age_limit" id="min_age_limit_' + i + '_' + k + '">' + jdata.centers[i].sessions[k].min_age_limit + '+</div>';
+
+							sessionhtmlStr = sessionhtmlStr + ' <div id="date_' + i + '_' + k + '" >' + formatted_date + '</div>';
+
+							sessionhtmlStr = sessionhtmlStr + ' <div class="available_capacity" id="available_capacity_' + i + '_' + k + '">Available Capacity :' + jdata.centers[i].sessions[k].available_capacity + '</div>';
+
+							//sessionhtmlStr = sessionhtmlStr +  ' <div class="min_age_limit" id="min_age_limit_'+i+'_'+k+'">Age Group: '+jdata.centers[i].sessions[k].min_age_limit+' +</div>'  ;
+
+							sessionhtmlStr = sessionhtmlStr + ' <div class="vaccine" id="vaccine_' + i + '_' + k + '">' + jdata.centers[i].sessions[k].vaccine + '</div>';
+
+							sessionhtmlStr = sessionhtmlStr + ' <div  style ="display:none" id="slots_' + i + '_' + k + '" >' + jdata.centers[i].sessions[k].slots + '</div>';
+
+							sessionhtmlStr = sessionhtmlStr + ' <div class="available_capacity" id="available_capacity_dose1_' + i + '_' + k + '">Dose 1 :' + jdata.centers[i].sessions[k].available_capacity_dose1 + '</div>';
+							sessionhtmlStr = sessionhtmlStr + ' <div class="available_capacity" id="available_capacity_dose2_' + i + '_' + k + '">Dose 2 :' + jdata.centers[i].sessions[k].available_capacity_dose2 + '</div>';
+							sessionhtmlStr = sessionhtmlStr + ' </div>';
+
+						}
+
+						if (invalidSessions == jdata.centers[i].sessions.length) {
+							htmlStr = htmlStr.replace('id="' + i + '" class="card"', 'id="' + i + '" class="HideCard"')
+						}
+
+						htmlStr = htmlStr + sessionhtmlStr + '</div>';  					//END sessionContainer
+
+
+
+						htmlStr = htmlStr + '</div>';
+
+
+						htmlStr = htmlStr + '</div>';    //END CARD
+
+
+
+					}
+					document.getElementById("data").innerHTML = htmlStr;
+
+					if (availableCount > 0 && Alert_Available_set == true) {
+						console.log(htmlStr);
+						play();
+
+					}
+
+				})
+				.catch(error => console.log('error', error));
+
+		}
+
+
+		/*-------START add remove column filters -----------*/
+		function addRemoveColumn(id) {
+			var filterButtonClasses = document.getElementById(id.id).classList;
+
+			if (filterButtonClasses.contains("filterAdded")) {
+				filterButtonClasses.remove("filterAdded");
+				setFilter(id.id, false);
+
+			} else {
+				filterButtonClasses.add("filterAdded");
+				setFilter(id.id, true);
+			}
+		}
+
+		function setFilter(filter, flag) {
+			switch (filter) {
+				case "filter_Paid":
+					filter_Paid = flag;
+					break;
+				case "filter_Free":
+					filter_Free = flag;
+					break;
+				case "filter_18":
+					filter_18 = flag;
+					break;
+				case "filter_45":
+					filter_45 = flag;
+					break;
+				case "filter_Available":
+					filter_Available = flag;
+					break;
+				case "Alert_Available_set":
+					Alert_Available_set = flag;
+					checkAvailableSlots();
+					break;
+			}
+		}
+
+
+
+		function play() {
+			var audio = document.getElementById("chatAudio");
+			audio.play()
+
+		}
+
+		function STOP() {
+			clearInterval(intr);
+			var audio = document.getElementById("chatAudio");
+			audio.pause();
+			audio.currentTime = 0;
+
+		}
+
+
+	</script>
+
+</head>
+
+<body>
+
+	<audio id="chatAudio" loop>
+		<source src="beep.mp3" type="audio/mpeg">
+	</audio>
+	<Div id="popup" class="modalPopup modalPopupHide">
+		<Div id='PopUpheader' class="PopUpheader">Select State</Div>
+
+		<div class="divsearchPopup">
+			<input class="searchPopup" onkeyup="filterTable()" type="search" id="searchPopup" />
+		</div>
+		<Div id='Popupdata' class="Popupdata"></Div>
+	</Div>
+	<div class="mainlPanel">
+
+		<div class="dataPanel">
+			<!-- Column filter START-->
+			<div class="ColumnFilter">
+				<select id="searchType" onchange="searchTypeChanged(this);">
+					<option selected>PIN Code</option>
+					<option>District</option>
+					<option>Coordinates</option>
+				</select>
+				<input id="txtSearch" type="text" class="input" placeholder="Enter PIN Code" />
+			</div>
+
+			<div id="FindByDistrictFilter" class="hideFindByDistrictFilter">
+			<div>	<label id="lblState"   >State: </label>
+				<label id="txtState"   onclick="stateChanged();" />
+			</div>
+			<div>
+				<label id="lblDistrict"   >District: </label>
+				<label id="txtDistricts"   onclick="districtChanged();"/>
+			</div>
+			</div>
+			<div>
+				<button class='filter' onclick='addRemoveColumn(this)' id="filter_Paid" title="Paid"> Paid </button>
+				<button class='filter' onclick='addRemoveColumn(this)' id="filter_Free" title="Free"> Free </button>
+				<button class='filter' onclick='addRemoveColumn(this)' id="filter_18" title="Age18"> 18+ </button>
+				<button class='filter' onclick='addRemoveColumn(this)' id="filter_45" title="Age45"> 45+ </button>
+				<button class='filter' onclick='addRemoveColumn(this)' id="filter_Available" title="Available">
+					Available </button>
+			</div>
+
+			<button class='filter' id="filter" onclick="getdata();"> getdata </button>
+			<button class='filter' id="Alert_Available_set" onclick="addRemoveColumn(this)"> setAlert </button>
+
+
+			<button class='filter' id="Alert_Available_set" onclick="STOP()"> Stop </button>
+
+			<label id="lblCentreFound" ></label>
+			<!-- Column filter END-->
+			<div id='data' />
+
+		</div>
+
+	</div>
+
+	<script>
+		var states = [];
+		var districts = [];
+		function searchTypeChanged(cntr) {
+			var id = document.getElementById("txtSearch");
+
+			clearSearchResults();
+			//alert(cntr.value);
+			if (cntr.value.toUpperCase() == "PIN CODE") {
+				SearchBy="PIN";
+				id.placeholder = 'Enter PIN Code'
+				setSerachByPINCodeParams();
+				
+
+			} else if (cntr.value.toUpperCase() == "DISTRICT") {
+				SearchBy="DISTRICT";
+				id.placeholder = 'Enter district Name'
+				setSerachByDistrictParams();
+				
+
+			} else if (cntr.value.toUpperCase() == "COORDINATES") {
+				id.placeholder = 'Enter location coordinates'
+
+			}
+		}
+
+		function setSerachByDistrictParams() {
+			var id = document.getElementById("txtSearch");
+			id.classList.add("hideInputText");
+			
+			document.getElementById("FindByDistrictFilter").classList.remove("hideFindByDistrictFilter");
+			getstates();
+		}
+
+
+		function getstates() {
+			var requestOptions = {
+				method: 'GET'
+			};
+
+			document.getElementById("PopUpheader").innerHTML = "Select State";
+
+			fetch("https://cdn-api.co-vin.in/api/v2/admin/location/states", requestOptions)
+				.then(response => response.text())
+				.then(result => {
+
+					var jdata = JSON.parse(result);
+
+					states = jdata;
+					document.getElementById("txtState").textContent = states.states[0].state_name;
+			//document.getElementById("txtState").tagName = states.states[0].state_id;
+
+			getDistricts( states.states[0].state_id);
+
+				})
+				.catch(error => console.log('error', error));
+
+		}
+
+		function stateChanged() {
+			clearSearchResults();
+
+			var jdata =states;
+var strTable = "<Table id='dataTable'>";
+for (let i = 0; i < jdata.states.length; i++) {
+	strTable = strTable + "<tr><td id='" + jdata.states[i].state_id + "' onClick='cellStateClicked(this);'>" + jdata.states[i].state_name + "</td></tr>"
+}
+strTable = strTable + "</Table>";
+
+document.getElementById("Popupdata").innerHTML = strTable;
+showPopup();
+		}
+
+
+		function districtChanged() {
+
+			clearSearchResults();
+
+			var jdata =districts ;
+					var strTable = "<Table id='dataTable'>";
+					for (let i = 0; i < jdata.districts.length; i++) {
+						strTable = strTable + "<tr><td id='" + jdata.districts[i].district_id + "' onClick='cellDistrictClicked(this);'>" + jdata.districts[i].district_name + "</td></tr>"
+					}
+					strTable = strTable + "</Table>";
+
+					document.getElementById("Popupdata").innerHTML = strTable;
+
+					showPopup();
+
+		}
+
+		function getDistricts(stateID) {
+			var requestOptions = {
+				method: 'GET'
+			};
+
+
+			document.getElementById("PopUpheader").innerHTML = "Select District";
+			fetch("https://cdn-api.co-vin.in/api/v2/admin/location/districts/" + stateID, requestOptions)
+				.then(response => response.text())
+				.then(result => {
+
+					var jdata = JSON.parse(result);
+districts = jdata;
+					
+document.getElementById("txtDistricts").textContent = districts.districts[0].district_name;
+			document.getElementById("txtDistricts").setAttribute( "Key",districts.districts[0].district_id);
+			 
+
+				})
+				.catch(error => console.log('error', error));
+
+		}
+
+		function setSerachByPINCodeParams() {
+			var id = document.getElementById("txtSearch");
+			id.classList.remove("hideInputText");
+			document.getElementById("FindByDistrictFilter").classList.add("hideFindByDistrictFilter");
+
+		}
+
+
+		function cellStateClicked(cntr) {
+			//alert(cntr.id+"|"+cntr.textContent);
+
+			document.getElementById("txtState").textContent = cntr.textContent;
+			//document.getElementById("txtState").tagName = cntr.id;
+
+			hidePopup();
+			getDistricts( cntr.id);
+		}
+
+
+		function cellDistrictClicked(cntr) {
+			//alert(cntr.id+"|"+cntr.textContent);
+
+			document.getElementById("txtDistricts").textContent = cntr.textContent;
+//document.getElementById("txtDistricts").tagName = cntr.id;
+			document.getElementById("txtDistricts").setAttribute( "Key",cntr.id);
+			 
+			hidePopup();
+		}
+
+		function filterTable() {
+			var input, filter, table, tr, td, i, txtValue;
+			input = document.getElementById("searchPopup");
+			filter = input.value.toUpperCase();
+			table = document.getElementById("dataTable");
+			tr = table.getElementsByTagName("tr");
+			for (i = 0; i < tr.length; i++) {
+				td = tr[i].getElementsByTagName("td")[0];
+				if (td) {
+					txtValue = td.textContent || td.innerText;
+					if (txtValue.toUpperCase().indexOf(filter) > -1) {
+						tr[i].style.display = "";
+					} else {
+						tr[i].style.display = "none";
+					}
+				}
+			}
+		}
+
+	 function	clearSearchResults(){
+		document.getElementById("data").innerHTML = "";	 
+		document.getElementById("lblCentreFound").textContent = "";
+	 }
+
+		function showPopup() {
+			document.getElementById("popup").classList.remove("modalPopupHide");
+			document.getElementById("searchPopup").value=""; 
+			document.getElementById("searchPopup").focus();
+		}
+
+
+		function hidePopup() {
+			document.getElementById("popup").classList.add("modalPopupHide");
+		}
+
+	</script>
+</body>
+
+
+</html>
