@@ -359,7 +359,7 @@ var SearchBy ="PIN"
 						htmlStr = htmlStr + '<div class="miscDetails">';  //Start Add and misc details
 						htmlStr = htmlStr + '<div class ="Address" id="Address_' + i + '"><i>Address: ' + jdata.centers[i].address + ' ('+jdata.centers[i].block_name+')</i></div>';
 						htmlStr = htmlStr + '<div class ="state" id="state_' + i + '"> State: ' + jdata.centers[i].state_name + ', District: ' + jdata.centers[i].district_name + ', ' + jdata.centers[i].pincode + ' </div>';
-						htmlStr = htmlStr + '<div class ="map" id="CoOrds_' + i + '"  onClick="goToVaccineCentre("'+jdata.centers[i].lat+','+jdata.centers[i].long +'");" >M'+jdata.centers[i].lat+','+jdata.centers[i].long+'</div>';
+						htmlStr = htmlStr + '<div class ="map" id="CoOrds_' + i + '"  onClick="goToVaccineCentre(this)" >M'+jdata.centers[i].lat+','+jdata.centers[i].long+'</div>';
 
 						if (jdata.centers[i].fee_type.toUpperCase() == "FREE") {
 							htmlStr = htmlStr + '<div class ="fee_type_Free" id="fee_type_' + i + '">' + jdata.centers[i].fee_type + '</div>';
