@@ -264,6 +264,13 @@
 
 	<script>
 
+		var coordinates, url;
+
+$(".map").on('click', function (coordinates) { 
+  url         = "https://www.google.com.sa/maps/search/"+ coordinates ;
+  window.open(url, '_blank');
+});
+		
 		const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var SearchBy ="PIN"
 
@@ -353,7 +360,7 @@ var SearchBy ="PIN"
 						htmlStr = htmlStr + '<div class="miscDetails">';  //Start Add and misc details
 						htmlStr = htmlStr + '<div class ="Address" id="Address_' + i + '"><i>Address: ' + jdata.centers[i].address + ' ('+jdata.centers[i].block_name+')</i></div>';
 						htmlStr = htmlStr + '<div class ="state" id="state_' + i + '"> State: ' + jdata.centers[i].state_name + ', District: ' + jdata.centers[i].district_name + ', ' + jdata.centers[i].pincode + ' </div>';
-						htmlStr = htmlStr + '<div class ="CoOrds" id="CoOrds_' + i + '" style ="display:none"> "lat": 18,"long": 73</div>';
+						htmlStr = htmlStr + '<div class ="map" id="CoOrds_' + i + ' >'+jdata.centers[i].lat+','+jdata.centers[i].long+'</div>';
 
 						if (jdata.centers[i].fee_type.toUpperCase() == "FREE") {
 							htmlStr = htmlStr + '<div class ="fee_type_Free" id="fee_type_' + i + '">' + jdata.centers[i].fee_type + '</div>';
